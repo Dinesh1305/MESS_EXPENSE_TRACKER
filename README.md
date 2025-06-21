@@ -21,25 +21,6 @@ In traditional hostel systems, non-veg token distribution is manual, time-consum
 - 📊 Excel Integration for storing mess bills per student
 - 📧 Email Notifications via Gmail SMTP using javax.mail
 - 📋 Admin Login for menu control and report review
-🗂️ Folder Structure
-
-MessBillManagement/
-├── src/ 
-│   ├──  MANAGEMENT/
-│   │   ├──  Addtokens.java
-│   │   ├──  Check.java
-│   │   ├──  admin_side.java
-│   │   ├──  otp.java
-│   │   ├──  Excel.java
-│   │   └──  Verification.java
-├──  webapp/
-│   ├──  index.jsp
-│   ├──  Stundent_otp.jsp
-│   └──  otp.jsp
-├──  lib/
-│   ├──  mysql-connector-java.jar
-│   ├──  poi.jar
-│   └──  javax.mail.jar
 
 🛠️ How to Run
 1. Clone the repo
