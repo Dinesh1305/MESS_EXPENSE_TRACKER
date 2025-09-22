@@ -3,8 +3,10 @@ package MANAGEMENT;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Random;
 
@@ -18,7 +20,7 @@ public class otp {
     static  String EMAIL_PASSWORD = "dxfe plxy dwkv cbwj";
 
    
-    public void  run(String e) {
+    public void  run(String e) throws ClassNotFoundException, SQLException {
       
         String email =e;
       
@@ -29,7 +31,7 @@ public class otp {
     }
 
 
-    private void sendEmail(String to) {
+    private void sendEmail(String to) throws ClassNotFoundException, SQLException {
       
     	//System.out.print(otp);
         try {
@@ -58,8 +60,28 @@ public class otp {
             message.setFrom(new InternetAddress(EMAIL_USERNAME));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
            
-            message.setText("Contract successful !! ");
-
+       Random r=new Random();
+       int otp_no=r.nextInt(1000, 9999);
+       
+       
+  	 String url = "jdbc:mysql://localhost:3306/mb";
+     String name = "root";
+     String password = "3105";
+     
+       
+          message.setText(String.valueOf(otp_no));
+          
+          Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(url, name, password);
+			String insert="insert into dailybill() values(?,?,?)";
+			 PreparedStatement ps = con.prepareStatement(insert);
+			 ps.setString(1,to);
+		     ps.setInt(2,1);
+		     
+		     String h=String.valueOf(otp_no);
+		    
+		     ps.setInt(3, otp_no);
+          ps.executeUpdate();
             Transport.send(message);
        //     System.out.println("Email sent successfully.");
         } catch (MessagingException e) {

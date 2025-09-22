@@ -30,7 +30,7 @@ public class Check extends HttpServlet {
              String two = r.getParameter("password");
              String insert = "SELECT PASSWORD FROM details WHERE EMAIL = ?";
              Cookie c3=new Cookie("email",one);
-             
+             System.out.println(one+"  "+two);
              Cookie c1=new Cookie("password",two);
              r2.addCookie(c3);
              r2.addCookie(c1);
@@ -49,7 +49,9 @@ public class Check extends HttpServlet {
 	             boolean message=false ;
 	             String message1=" ";            // Verify the password
 	             if (rs.next()) {
+	            	 
 	                 String pass1 = rs.getString("password");
+	                 System.out.println(pass1);
 	                 if (pass1.equals(two)) {
 	                 	
 	                     message =true;
