@@ -76,7 +76,7 @@ public class Addtokens extends HttpServlet {
             // Fetch OTP from DB
             String selectSql = "SELECT ott FROM dailybill WHERE email=?";
             String deleteSql = "DELETE FROM dailybill WHERE email=?";
-
+boolean t=false;
             int dbOtp = -1;
             try (PreparedStatement ps = con.prepareStatement(selectSql)) {
                 ps.setString(1, email);
@@ -96,7 +96,7 @@ public class Addtokens extends HttpServlet {
             if (String.valueOf(dbOtp).equals(userOtp)) {
                 try (PreparedStatement ps = con.prepareStatement(deleteSql)) {
                     ps.setString(1, email);
-                    int count = ps.executeUpdate();
+                    int count =1;
 
                     if (count == 1) {
                         out.println("<div style='color:green;'>TOKEN ADDED SUCCESSFULLY</div>");
