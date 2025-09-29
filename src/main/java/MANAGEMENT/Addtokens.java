@@ -11,7 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/bookToken")
 public class Addtokens extends HttpServlet {
-	static String food=null;
+    static String food = null;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         food = req.getParameter("foodItem");
@@ -46,8 +47,17 @@ public class Addtokens extends HttpServlet {
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
 
+        // Add modern CSS styling
+        out.println("<style>"
+                + "body { font-family: Arial, sans-serif; background:#f9f9f9; }"
+                + ".msg { padding: 15px; margin: 20px auto; width: 60%; border-radius: 8px; "
+                + "font-size: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }"
+                + ".success { background: #e6ffed; color: #1e4620; border: 1px solid #b7e4c7; }"
+                + ".error { background: #ffe6e6; color: #661919; border: 1px solid #f5c2c2; }"
+                + ".warning { background: #fff7e6; color: #664d1a; border: 1px solid #ffe5b4; }"
+                + "</style>");
+
         String userOtp = req.getParameter("otp");
-     //   String food = req.getParameter("foodItem");
         String email = null;
 
         // Get email from cookies
@@ -62,7 +72,7 @@ public class Addtokens extends HttpServlet {
         }
 
         if (email == null) {
-            out.println("<div style='color:red;'>Session expired. Please login again.</div>");
+            out.println("<div class='msg error'>Session expired. Please login again.</div>");
             return;
         }
 
@@ -76,8 +86,8 @@ public class Addtokens extends HttpServlet {
             // Fetch OTP from DB
             String selectSql = "SELECT ott FROM dailybill WHERE email=?";
             String deleteSql = "DELETE FROM dailybill WHERE email=?";
-boolean t=false;
             int dbOtp = -1;
+
             try (PreparedStatement ps = con.prepareStatement(selectSql)) {
                 ps.setString(1, email);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -88,7 +98,7 @@ boolean t=false;
             }
 
             if (dbOtp == -1) {
-                out.println("<div style='color:red;'>OTP not found. Please try again.</div>");
+                out.println("<div class='msg error'>OTP not found. Please try again.</div>");
                 return;
             }
 
@@ -96,26 +106,27 @@ boolean t=false;
             if (String.valueOf(dbOtp).equals(userOtp)) {
                 try (PreparedStatement ps = con.prepareStatement(deleteSql)) {
                     ps.setString(1, email);
-                    int count =1;
+                    int count = 1; // your logic unchanged
 
                     if (count == 1) {
-                        out.println("<div style='color:green;'>TOKEN ADDED SUCCESSFULLY</div>");
+                        out.println("<div class='msg success'>TOKEN ADDED SUCCESSFULLY</div>");
 
                         // Call Excel class (your implementation)
                         Excel e = new Excel();
                         e.add(food, email);
 
                     } else {
-                        out.println("<div style='color:red;'>TOKEN CAN'T BE ADDED</div>");
+                        out.println("<div class='msg warning'>TOKEN CAN'T BE ADDED</div>");
                     }
                 }
             } else {
-                out.println("<div style='color:red;'>Invalid OTP</div>");
+                out.println("<div class='msg error'>Invalid OTP</div>");
             }
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            out.println("<div style='color:red;'>Database error.</div>");
+            out.println("<div class='msg error'>Database error.</div>");
         }
     }
 }
+
